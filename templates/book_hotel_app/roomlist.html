@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Room list</h2>
+    {% for obj in rooms %}
+        <li>
+            <a href="{% url 'room_detail' obj.room_id %}">{{ obj.room_id }} room, cost: {{ obj.cost }} </a>
+        </li>
+
+
+    {% endfor %}
+    <form method="get">
+        <label for="cost">Cost:</label>
+        <input type="number" name="cost" id="cost">
+        <label for="roomCapacity">Room Capacity:</label>
+        <input type="number" name="room_capacity" id="roomCapacity">
+        <button type="submit">Filter</button>
+    </form>
+
+{% endblock %}

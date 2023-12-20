@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Room Details</h2>
+        <hr>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h4>Room ID: {{ room.room_id }}</h4>
+                <p><strong>Room Type:</strong> {{ room.name_room_type }}</p>
+                <p><strong>Cost per Night:</strong> {{ room.cost }}</p>
+                <p><strong>Capacity:</strong> {{ room.room_capacity }} persons</p>
+            </div>
+
+        </div>
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'room_detail' room_id=room.room_id %}">
+                {% csrf_token %}
+                <label for="check_in_date">Дата начала бронирования:</label>
+                <input type="date" name="check_in_date" required min="{% now 'Y-m-d' %}">
+
+                <label for="check_out_date">Дата окончания бронирования:</label>
+                <input type="date" name="check_out_date" required min="{% now 'Y-m-d' %}">
+
+                <button type="submit">Забронировать</button>
+            </form>
+
+            {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            <h3>Ваши бронирования для этой комнаты:</h3>
+            <ul>
+                {% for booking in user_bookings %}
+                    {% if booking.check_in_date == booking.check_out_date %}
+                    	<li>Пользователь {{ user.username }} забронировал комнату на  {{ booking.check_in_date }} число.</li>
+                    {% endif %}
+                    {% if booking.check_in_date != booking.check_out_date %}
+                    	<li>Пользователь {{ user.username }} забронировал комнату с  {{ booking.check_in_date }} по {{ booking.check_out_date }}.</li>
+                    {% endif %}
+
+                    {% if request.user.is_superuser or request.user == booking.user %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="cancel_booking" value="{{ booking.id }}">
+                            <button type="submit">Отменить</button>
+                        </form>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            {% if user.is_superuser %}
+                <h3>All Bookings for this Room</h3>
+                {% for booking in all_bookings %}
+                    <li>
+                        Пользователь {{ booking.user.username }} забронировал комнату
+                        с {{ booking.check_in_date }} по {{ booking.check_out_date }}.
+                    <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="cancel_booking" value="{{ booking.id }}">
+                            <button type="submit">Отменить</button>
+                    </form>
+                    </li>
+                {% endfor %}
+            {% endif %}
+        {% else %}
+            <p>Чтобы забронировать комнату, вам нужно <a href="{% url 'login' %}">войти в систему</a>.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>User Profile</h2>
+    <p>Username: {{ user.username }}</p>
+    <p>First Name: {{ user.first_name }}</p>
+    <p>Last name: {{ user.last_name }}</p>
+    <p>Email: {{ user.email }}</p>
+
+    <h3>Booked Rooms</h3>
+    <ul>
+        {% for booking in bookings %}
+            {% if booking.check_in_date == booking.check_out_date  %}
+                <li>Комната под номером {{ booking.room_id }} забронирована на {{ booking.check_in_date }}.</li>
+
+            {% endif %}
+            {% if booking.check_in_date != booking.check_out_date  %}
+                <li>Комната под номером {{ booking.room_id }} забронирована с {{ booking.check_in_date }} по {{ booking.check_out_date }}.</li>
+            {% endif %}
+
+        {% endfor %}
+    </ul>
+
+{% endblock %}

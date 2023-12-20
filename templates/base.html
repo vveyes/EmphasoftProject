@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <header>
+        <a href="{% url 'rooms_list' %}">Rooms</a>
+    </header>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <p>Welcome, <a href="{% url 'user_profile' %}">{{ user.username }}</a>!</p>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <input type="submit" value="Logout">
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+    {% block content %}
+    	
+    {% endblock %}
+</body>
+</html>
