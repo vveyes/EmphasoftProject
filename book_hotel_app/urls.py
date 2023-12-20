@@ -1,8 +1,10 @@
 from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import redirect
 from django.urls import path
 from .views import RoomList, RoomDetail, BookRoomList, SignupView, UserProfileView
 
 urlpatterns = [
+    path('', lambda request: redirect('rooms_list'), name='home'),
     path('registration/', SignupView.as_view(), name='register'),
     path('profile/', UserProfileView.as_view(), name='user_profile'),
     path('login/', LoginView.as_view(template_name='book_hotel_app/login.html', success_url='rooms_list'),
