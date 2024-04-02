@@ -8,7 +8,7 @@
 ___
 ### Инструкция по запуску приложения:
 
-+ Клонируем репозиторий (**ветка master**).
++ Клонируем репозиторий. (Проект сделан одним коммитом, так как проект небольшой).
 + Переходим в директорию проекта.
 + Создаем, затем активируем виртуальное окружение в терминале.
 
@@ -17,7 +17,20 @@ venv\Scripts\Activate
 ```
 + Установка зависимостей.
 ```pip install -r requirements.txt```
-+ Найдите **DATABASES** в настройках проекта и замените **Engine**, **Name**, **User**, **Password** на свои реальные.
+Database и Secret_key скрыты в .env файле. Пример, как он выглядит:
+```angular2html
+
+SECRET_KEY=django-insecure-c@_@kw^...
+
+
+DB_NAME=blank
+DB_USER=blank
+DB_PASSWORD=blank
+DB_HOST=localhost
+DB_PORT=5432
+```
+
++ Замените secret_key без кавычек, а также настройки database **Engine**, **Name**, **User**, **Password** на свои реальные.
 + Выполните миграции в терминале:
 ```angular2html
 python manage.py makemigrations
