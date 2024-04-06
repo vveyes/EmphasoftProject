@@ -1,4 +1,4 @@
-from django import forms
+'''from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.exceptions import ValidationError
 
@@ -25,3 +25,4 @@ class ReservationForm(forms.ModelForm):
             raise ValidationError('Дата окончания бронирования не может быть меньше даты начала бронирования.')
 
         return cleaned_data
+'''
